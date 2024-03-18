@@ -5,11 +5,13 @@
 @section('content')
 
     <div class="py-12">
-        <div class="card col-md-8 m-auto">
+        <div class="card">
             <div class="card-header">
-                <a href="{{ route("admin.role.create") }}" class="btn btn-primary"> Ajouter</a>
+                <h4 class="card-title">@yield('title')</h4>
+                <a href="{{ route("admin.role.create") }}" class="btn btn-primary float-end"> Ajouter</a>
             </div>
         <table class="table table-striped">
+            <caption class="container">@yield('title')</caption>
             <thead class="table-header-group">
             <tr>
                 <th>Role</th>

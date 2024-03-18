@@ -22,14 +22,11 @@ class LocationFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'debut_trajet' => ['required', 'datetime'],
-            'fin_trajet' => ['required', 'datetime'],
-            'date' => ['required', 'date'],
+            'heure_depart' => ['required', 'string'],
+            'date' => ['required', 'string'],
             'lieu_depart' => ['required', 'string', 'min:4', 'max:255'],
             'lieu_d_arrive' => ['required', 'string'],
-            'prix_du_trajet' => ['required', 'integer'],
-            'chauffeur_id' => ['required', 'integer'],
-            'user_id' => ['required', 'integer'],
+            'voiture_id' => ['required', 'string'],
         ];
     }
 }

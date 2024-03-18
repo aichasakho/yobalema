@@ -19,7 +19,8 @@ return new class extends Migration
             $table->date('date_achat');
             $table->float('km_par_defaut');
             $table->float('km_actuel');
-            $table->enum('statut', ['Marche', 'Panne', ' location']);
+            $table->enum('statut', ['Marche', 'Panne', 'location']);
+
             $table->timestamps();
         });
     }
@@ -30,5 +31,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('voitures');
+
     }
 };

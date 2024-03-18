@@ -1,42 +1,69 @@
 @extends('layouts.admin.base')
 
-@section('title', 'Formulaire utilisateur')
+@section('title', 'Formulaire Des Utilisateurs')
 
 @section('content')
 
-    <h1>@yield('title')</h1>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h4>@yield('title')</h4>
+            </div>
+            <div class="card-body">
+                @if(Route::has(['admin.user.update', 'admin.user.store']))
+                    <form method="post" class="needs-validation vstack gap-2"
+                         action="{{ route(
+                                    $user->exists
+                                    ? 'admin.user.update'
+                                    : 'admin.user.store',
+                                    $user
+                                )
+                         }}"
+                        enctype="multipart/form-data" novalidate >
 
-    <div class="card">
-        <div class="card-header">
-            <div class="card-title">@yield('title')</div>
+                        @csrf
+                        @method($user->exists ? "PUT" : "POST")
+
+                        <div class="row">
+
+                            @include('shared.input', ['name' => "nom", 'value' => $user->nom, 'class' => 'col-md-6'])
+
+                            @include('shared.input', ['label' => 'Prénom', 'name'=> 'prenom',
+                                    'value' => $user->prenom, 'class' => 'col-md-6'])
+                        </div>
+
+                        <div class="row">
+                            @include('shared.input', ['name' => 'password', 'type' => 'password',
+                                'label' => 'Mot de passe', 'class' => 'col-md-6'])
+
+                            @include('shared.input', ['name' => 'confirm_password', 'type' => 'password',
+                                'label' => 'Confirmer le mot de passe', 'class' => 'col-md-6'])
+                        </div>
+
+                        @include('shared.input', ['name' => 'email', 'value' => $user->email, 'type' => 'email'])
+
+                        <div class="row">
+                            @include('shared.input', ['name' => 'telephone', 'value' => $user->telephone,
+                                'class' => 'col-md-6'])
+
+                            @include('shared.input', ['name' => 'adresse', 'value' => $user->adresse,
+                                'class' => 'col-md-6'])
+                        </div>
+
+                        @include('shared.select', ['name' => 'role_user_id', 'value' => $user->role_user_id,
+                            'label' => 'Role', 'options' => $roles ])
+
+                        <button type="submit" class="btn btn-primary">
+                            @if($user->exists)
+                                Modifier
+                            @else
+                                Creer
+                            @endif
+                        </button>
+
+                    </form>
+                @endif
+            </div>
         </div>
-        <div class="card-body">
-            <form class="needs-validation" novalidate action="" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-
-                    @include('shared.input', ['name' => "role_user", 'value' =>  $usert->role_user])
-
-                    @include('shared.input',['name' => 'nom', 'value' => $user->nom, 'required' => false,
-                        'class' => 'col-md-4' ])
-
-                    @include('shared.input',['name' => 'prenom', 'value' => $user->prenom, 'class' => 'col-md-4'])
-
-                </div>
-
-
-                @include('shared.input', ['label' => 'Mot de passe', 'name' => 'password',
-                        'type' => 'password'])
-                @include('shared.input', ['label' => 'Email', 'name' => 'email',
-                       'type' => 'email', 'value' => $user->email])
-
-                @include('shared.input', ['label' => "Telephone", 'name' => "telephone", 'value' => $user->telephone])
-                @include('shared.input', ['label' => "Adresse", 'name' => "adresse", 'value' =>  $usert->adresse])
-
-</form>
-</div>
-</div>
-
+    </div>
 @endsection
-
-

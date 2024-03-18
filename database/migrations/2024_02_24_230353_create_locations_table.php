@@ -18,18 +18,27 @@ return new class extends Migration
             $table->string('lieu_depart');
             $table->string('lieu_d_arrive');
             $table->string('date');
-            $table->dateTime('debut_trajet');
-            $table->dateTime('fin_trajet');
+            $table->dateTime('debut_trajet')->default(now());
+            $table->dateTime('fin_trajet')->nullable();
             $table->string('prix_du_trajet');
-            $table->foreignIdFor(Contrat::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->unsignedBigInteger('client_id') -> nullable();
+            $table->unsignedBigInteger('chauffeur_id') -> nullable();
 
-            $table->foreignIdFor(User::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+
+            $table->foreign('client_id')
+                -> references('id')
+                -> on('users')
+                -> constrained()
+                -> cascadeOnUpdate()
+                -> cascadeOnDelete();
+
+            $table->foreign('client_id')
+                -> references('id')
+                -> on('users')
+                -> constrained()
+                -> cascadeOnUpdate()
+                -> cascadeOnDelete();
+
             $table->timestamps();
         });
     }

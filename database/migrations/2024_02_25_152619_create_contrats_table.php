@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Contrat;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('contrats', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Contrat::class)
+            $table->foreignIdFor(User::class)
             ->constrained()
             ->cascadeOnUpdate()
             ->cascadeOnDelete();

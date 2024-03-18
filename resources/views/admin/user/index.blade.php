@@ -1,54 +1,76 @@
 @extends('layouts.admin.base')
 
-@section('title', 'Page utilisateurs')
+@section('title', 'Liste Des Utilisateurs')
 
 @section('content')
 
-    <h1>@yield('title')</h1>
-
-    <a href="{{ route('admin.user.create') }}" class="btn btn-primary">Ajouter</a>
-
-    <!-- TODO: AFFicher la listes de tous les utilisateurs -->
-
-    @foreach($users as $user)
-
-    @endforeach
-
-@endsection
-
-
-
-
-    {{--<div class="py-12">
-        <div class="card col-md-8 m-auto">
-            <div class="card-header">
-                <a href="{{ route("admin.role.create") }}" class="btn btn-primary"> Ajouter</a>
+    <div class="py-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="card-title">@yield('title')</h4>
+                @if(Route::has('admin.user.create'))
+                    <a href="{{ route("admin.user.create") }}" class="btn btn-primary float-end">
+                        Ajouter
+                    </a>
+                @endif
             </div>
             <table class="table table-striped">
+                <caption class="container">@yield('title')</caption>
                 <thead class="table-header-group">
                 <tr>
+                    <th>Nom</th>
+                    <th>email</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
                     <th>Role</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($roles as $role)
-                    <tr>
-                        <td>{{ $role->name }}</td>
-                        <td>
-                            <a href="{{ route("admin.role.edit", $role) }}" class="btn btn-primary">Modifier</a>
-                            <form action="{{ route("admin.role.destroy", $role) }}" method="post"
-                                  class="needs-validation d-inline" novalidate>
-                                @csrf
-                                @method("DELETE")
-                                <button type="submit" class="btn btn-danger">Supprimer</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
+                @isset($users)
+                    @foreach($users as $user)
+                        <tr>
+                            <td>{{ $user->nom }} {{ $user->prenom }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->telephone }}</td>
+                            <td>{{ $user->adresse }}</td>
+                            <td>{{ $user->role_user->name ?? 'no role yet' }}</td>
+                            <td class="d-flex align-items-center gap-1">
+
+                                @if(Route::has("admin.user.edit"))
+                                    <a href="{{ route("admin.user.edit", $user) }}" class="btn btn-primary"
+                                       title="Modifier"> <i class="ti ti-pencil"></i>
+                                    </a>
+                                @endif
+
+                                @if(Route::has("admin.user.destroy"))
+                                    <form action="{{ route("admin.user.destroy", $user) }}" method="post"
+                                          class="d-inline">
+                                        @csrf
+                                        @method("DELETE")
+                                        <button type="submit" class="btn btn-danger" title="Supprimer"
+                                                onclick="confirm('Confirmer le suppression')
+                                                ? this.closest('form').submit()
+                                                : event.preventDefault()"
+                                        >
+                                            <i class="ti ti-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                @endisset
                 </tbody>
+
             </table>
+            <div class="container">
+                @isset($users)
+                    {{ $users->links() }}
+                @endisset
+            </div>
+
         </div>
     </div>
 
---}}
+@endsection

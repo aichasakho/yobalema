@@ -1,32 +1,55 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Formulaire des chauffeurs') }}
-        </h2>
-    </x-slot>
-
+@extends('layouts.admin.base')
+@section('title', $chauffeur->exists ? 'Modifier le chauffeur' : 'Ajouter un chauffeur')
+@section('content')
     <div class="container mt-5">
-        <div class="card col-md-8">
+        <h1>@yield('title')</h1>
+        <div class="card col-md-8 m-auto">
             <div class="card-body">
-                <form method="post" class="needs-validation vstack gap-2"
+                <div class="d-flex justify-content-end">
+                    <a href="{{ route('admin.user.create') }}" class="btn btn-primary mb-3 ">Ajouter un utilisateur</a>
+                </div>
+                <form method="post" class="gap-2 needs-validation vstack"
                       action="{{ route($chauffeur->exists ? 'admin.chauffeur.update' : 'admin.chauffeur.store', $chauffeur) }}"
-                      novalidate >
+                      novalidate
+                      enctype="multipart/form-data"
+                >
                     @csrf
                     @method($chauffeur->exists ? "PUT" : "POST")
 
-                    @include('shared.input', ['label' => "ID Voiture", 'name' => "voiture_id", 'value' => $chauffeur->voiture_id])
-                    @include('shared.input', ['label' => "Expérience", 'name' => "experience", 'value' =>$chauffeur->experience])
-                    @include('shared.input', ['label' => "Numéro de permis", 'name' => "numero_permis", 'value' => $chauffeur->numero_permis])
-                    @include('shared.input', ['label' => "Date d'émission", 'name' => "date_emission", 'value' => $chauffeur->date_emission])
-                    @include('shared.input', ['label' => "Date d'expiration", 'name' => "date_expiration", 'value' => $chauffeur->date_expiration])
-                    @include('shared.input', ['label' => "Type de voiture", 'name' => "type_de_voiture", 'value' => $chauffeur->type_de_voiture])
-                    @include('shared.input', ['label' => "Validité du permis", 'name' => "is_permis_valide", 'value' => $chauffeur->is_permis_valide])
+                    <!-- choisir l'utilisateur -->
+                    @if($utilisateurs)
+                        <label for="user" class="form-label">Utilisateur <span class="text-danger fw-bold">*</span></label>
+                        <select id="user" class="form-control" name="user_id" required>
+                            <option value="">Selectionner le chauffeur</option>
+                            @foreach($utilisateurs as $utilisateur)
+                                @if(strtolower($utilisateur->role_user?->name) == 'chauffeur')
+                                    <option
+                                        value="{{ $utilisateur->id }}">{{ $utilisateur->prenom }} {{ $utilisateur->nom }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @error('user_id') {{ $message }} @enderror
+                    @else
+                        <p>Aucun utilisateur</p>
+                    @endif
+                    <!-- fin de choix utilisateur -->
 
+                    @include('shared.input', ['label' => "Numero du permis", 'name' => "num_permis", 'value' => $chauffeur->num_permis])
+
+                    @include('shared.select', ['label' => "Categorie", 'name' => "categorie", 'value' => $chauffeur->categorie, 'options' => $categories])
+
+                    @include('shared.input', ['type' => 'date', 'name' => "date_delivrance", 'label' => "Date de delivrance", 'value' => $chauffeur->date_delivrance])
+
+                    @include('shared.input', ['type' => 'date', 'name' => "date_expiration", 'label' => "Date de expiration", 'value' => $chauffeur->date_expiration])
+
+                    @include('shared.input', ['type' => 'number', 'name' => "annee_experience", 'label' => 'Annees d\'experience', 'value' => $chauffeur->annee_experience])
+
+                    @include('shared.input', ['type' => 'file', 'name' => 'image', 'label' => 'Photo du chauffeur'])
                     <button type="submit" class="btn btn-primary">
                         @if($chauffeur->exists)
-                            Modifier
+                            Continuer la Modification
                         @else
-                            Creer
+                            Continuer
                         @endif
                     </button>
 
@@ -34,4 +57,11 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+    <script>
+        window.onload = function() {
+          var today = new Date().toISOString().split('T')[0];
+          document.getElementById("date_delivrance").setAttribute("max", today);
+          document.getElementById("date_expiration").setAttribute("min", today);
+        };
+      </script>
+@endsection

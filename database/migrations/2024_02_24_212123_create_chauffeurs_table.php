@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('numero_permis')->unique();
             $table->string('date_emission');
             $table->string('date_expiration');
-            $table->enum('categorie', ['A1', 'A', 'B', 'C', 'D', 'E','F']);//* Les categories : A => motos, B => voiture, C => camion, D => Bus, E => Gros Camions, F => Vehicules speciaux
+            $table->enum('categorie', ['A1', 'A', 'B', 'C']);//* Les categories : A => motos, B => voiture, C => camion
             $table->string('image');
             $table->foreign('voiture_id')->references('id')->on('voitures') ->nullable()
             ->constrained()

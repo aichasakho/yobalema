@@ -1,28 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Formulaire des payements') }}
+            {{ __('Fromulaire des payement') }}
         </h2>
     </x-slot>
 
     <div class="container mt-5">
         <div class="card col-md-8">
             <div class="card-body">
-
-
                 <form method="post" class="needs-validation vstack gap-2"
-                      action="{{ route($payement->exists ? 'admin.payement.update' : 'admin.payement.store', $payement) }}"
+                      action="{{ route($payment->exists ? 'admin.payement.update' : 'admin.payement.store', $role) }}"
                       novalidate
                 >
                     @csrf
                     @method($payement->exists ? "PUT" : "POST")
 
-                    @include('shared.input', ['label' => "N° Location", 'name' => "location_id", 'value' => $payement->location_id])
-                    @include('shared.input', ['label' => "Mode de paiement", 'name' => "mode", 'value' =>$payement->mode])
-                    @include('shared.input', ['label' => "Montant", 'name' => "montant", 'value' => $payement->montant])
-                    @include('shared.input', ['label' => "Date de paiement", 'name' => "date_paiement", 'value' => $payement->date_paiement])
+                    @include('shared.input', ['label' => "Nom", 'name' => "name", 'value' => $role->name])
+
                     <button type="submit" class="btn btn-primary">
-                        @if($payement->exists)
+                        @if($role->exists)
                             Modifier
                         @else
                             Creer

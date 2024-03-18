@@ -27,6 +27,8 @@ class UserFactory extends Factory
             'nom' => fake()->name(),
             'prenom' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
+            'telephone' => fake()->unique()->phoneNumber(),
+            'adresse' => fake()->address(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
@@ -42,4 +44,14 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+
+    public function withRandomRole(): static
+    {
+        // Obtenez un ID de rôle aléatoire
+        $roleId = \App\Models\RoleUser::inRandomOrder()->value('id');
+
+        return $this->state(fn (array $attributes) => [
+            'role_user_id' => $roleId,
+        ]);
 }

@@ -22,7 +22,7 @@ class ContratFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'chauffeur_id' => ['required', 'integer'],
+            'user_id' => ['required', 'integer', 'unique:contrats'],
             'salaire' => ['required', 'integer'],
             'duree_contrat' => ['required'],
             'type_contrat' => ['required', 'string'],

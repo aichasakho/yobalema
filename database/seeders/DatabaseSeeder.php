@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // let use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
+use App\Models\Voiture;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,20 +16,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            RoleUserSeeder::class,
+        ]);
 
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'nom' => 'admin',
             'prenom' => 'admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('passer123'),
+            'password' => Hash::make('passer'),
             'remember_token' => Str::random(10),
-            'telephone' => "77 990 00 00",
+            'telephone' => "77 770 70 70",
             'adresse' => 'Dakar'
         ]);
 
-        \App\Models\User::factory(20)->create();
+        User::factory(10)->create();
+
+        //Voiture::factory(10)->create();
+
+
 
     }
 }

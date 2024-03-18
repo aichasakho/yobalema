@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Schema;
+use App\Services\OpenWeatherMapService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +13,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(OpenWeatherMapService::class, function () {
+            // Vous pouvez récupérer la clé API à partir de votre configuration Laravel (.env, config, etc.)
+            $apiKey = config('services.open_weather_map.api_key');
+
+            return new OpenWeatherMapService($apiKey);
+        });
     }
 
     /**
@@ -20,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Schema::defaultStringLength(191);
+        Paginator::useBootstrapFive();
     }
 }
