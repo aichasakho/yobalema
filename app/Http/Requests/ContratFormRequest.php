@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ContratFormRequest extends FormRequest
 {
@@ -22,7 +23,9 @@ class ContratFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', 'unique:contrats'],
+            //'matricule' => ['string', 'required',Rule::unique('voitures')->ignore($this->voiture)],
+
+            'user_id' => ['required', 'integer', Rule::unique('contrats')->ignore($this->contrats)],
             'salaire' => ['required', 'integer'],
             'duree_contrat' => ['required'],
             'type_contrat' => ['required', 'string'],

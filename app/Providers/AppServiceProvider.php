@@ -2,30 +2,31 @@
 
 namespace App\Providers;
 
-use App\Services\OpenWeatherMapService;
+use App\Services\NominatimService;
+use GuzzleHttp\Client;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+
+use App\Services\GeocodioService;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
+    public function register()
     {
-        $this->app->singleton(OpenWeatherMapService::class, function () {
-            // Vous pouvez récupérer la clé API à partir de votre configuration Laravel (.env, config, etc.)
-            $apiKey = config('services.open_weather_map.api_key');
-
-            return new OpenWeatherMapService($apiKey);
+        $this->app->singleton(NominatimService::class, function ($app) {
+            $httpClient = new Client();
+            return new NominatimService($httpClient);
         });
     }
+
 
     /**
      * Bootstrap any application services.
      */
     public function boot(): void
     {
+        Schema::defaultStringLength(191);
         Paginator::useBootstrapFive();
     }
 }

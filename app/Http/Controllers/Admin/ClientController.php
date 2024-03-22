@@ -9,7 +9,7 @@ use App\Http\Requests\ClientFormRequest;
 
 class ClientController extends Controller
 {
-      /**
+    /**
      * Display a listing of the resource.
      */
     public function index()

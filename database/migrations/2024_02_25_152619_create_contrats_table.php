@@ -20,7 +20,7 @@ return new class extends Migration
             ->cascadeOnUpdate()
             ->cascadeOnDelete();
             $table->integer('salaire');
-            $table->date('duree_contrat');
+            $table->integer('duree_contrat');
             $table->enum('type_contrat', ['CDI', 'CDD']);
             $table->boolean('etat_contrat');
             $table->date('date_embauche');

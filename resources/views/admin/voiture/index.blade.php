@@ -1,6 +1,6 @@
 @extends('layouts.admin.base')
 
-@section('title', 'Liste Des Véhicules')
+@section('title', 'Liste Des Voitures')
 
 @section('content')
 
@@ -8,8 +8,8 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h4 class="card-title">@yield('title')</h4>
-                @if(Route::has('admin.vehicule.create'))
-                    <a href="{{ route("admin.vehicule.create") }}" class="btn btn-primary float-end">
+                @if(Route::has('admin.voiture.create'))
+                    <a href="{{ route("admin.voiture.create") }}" class="btn btn-primary float-end">
                         Ajouter
                     </a>
                 @endif
@@ -22,31 +22,33 @@
                     <th>Date Achat</th>
                     <th>Kilométre par défaut</th>
                     <th>Kilométre actuel</th>
+                    <th>Image voiture</th>
                     <th>Statut</th>
-                    <th>Catégorie</th>
+                    <th>Type de voiture</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                @isset($vehicules)
-                @foreach($vehicules as $vehicule)
+                @isset($voitures)
+                @foreach($voitures as $voiture)
                     <tr>
-                        <td>{{ $vehicule->matricule }}</td>
-                        <td>{{ $vehicule->date_achat }}</td>
-                        <td>{{ $vehicule->km_defaut }}</td>
-                        <td>{{ $vehicule->km_actuel }}</td>
-                        <td>{{ $vehicule->statut }}</td>
-                        <td>{{ $vehicule->categorie }}</td>
+                        <td>{{ $voiture->matricule }}</td>
+                        <td>{{ $voiture->date_achat }}</td>
+                        <td>{{ $voiture->km_par_defaut }}</td>
+                        <td>{{ $voiture->km_actuel }}</td>
+                        <td><img src="{{ asset('/storage/'.$voiture->image_voiture) }}" alt="" class="w-50"></td>
+                        <td>{{ $voiture->statut }}</td>
+                        <td>{{ $voiture->type_de_voiture }}</td>
                         <td>
 
-                            @if(Route::has("admin.vehicule.edit"))
-                                <a href="{{ route("admin.vehicule.edit", $vehicule) }}" class="btn btn-primary">
+                            @if(Route::has("admin.voiture.edit"))
+                                <a href="{{ route("admin.voiture.edit", $voiture) }}" class="btn btn-primary">
                                     Modifier
                                 </a>
                             @endif
 
-                            @if(Route::has("admin.vehicule.destroy"))
-                                <form action="{{ route("admin.vehicule.destroy", $vehicule) }}" method="post"
+                            @if(Route::has("admin.voiture.destroy"))
+                                <form action="{{ route("admin.voiture.destroy", $voiture) }}" method="post"
                                       class="d-inline">
                                     @csrf
                                     @method("DELETE")
@@ -64,8 +66,8 @@
 
             </table>
             <div class="container">
-                @isset($vehicules)
-                    {{ $vehicules->links() }}
+                @isset($voitures)
+                    {{ $voitures->links() }}
                 @endisset
             </div>
 

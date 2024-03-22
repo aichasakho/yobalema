@@ -20,10 +20,10 @@
                         <th scope="col">Adresse</th>
                         <th scope="col">Numéro de Permis</th>
                         <th scope="col">Catégorie</th>
-                        <th scope="col">Date Délivrance</th>
-                        <th scope="col">Date Expiration</th>
-                        <th scope="col">Annee Expérience</th>
-                        <th scope="col">Vehicule</th>
+                        <th scope="col">Date d'émission</th>
+                        <th scope="col">Date d'expiration</th>
+                        <th scope="col">Expérience</th>
+                        <th scope="col">Voiture</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -34,22 +34,24 @@
                         <td>
                             <img src="{{ asset('/storage/'.$user->chauffeurs?->image) }}" class="rounded"
                                 alt="Chauffeur Avatar" width="100" height="100">
+
+
                         </td>
                         <td>{{ $user->nom }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->telephone }}</td>
                         <td>{{ $user->adresse }}</td>
-                        <td>{{ $user->chauffeurs?->num_permis }}</td>
+                        <td>{{ $user->chauffeurs?->numero_permis }}</td>
                         <td>{{ $user->chauffeurs?->categorie }}</td>
-                        <td>{{ $user->chauffeurs?->date_delivrance }}</td>
+                        <td>{{ $user->chauffeurs?->date_emission }}</td>
                         <td>{{ $user->chauffeurs?->date_expiration }}</td>
-                        <td>{{ $user->chauffeurs?->annee_experience }}</td>
-                        <td>{{ $user->chauffeurs?->vehicule?->matricule ?? "PAs de vehicule attribue" }}</td>
+                        <td>{{ $user->chauffeurs?->experience }}</td>
+                        <td>{{ $user->chauffeurs?->voiture?->matricule ?? "Pas encore de voiture" }}</td>
                         <td>
-                            <form action="{{ route("admin.chauffeur.addVehicule", $user->chauffeurs) }}" method="post"
+                            <form action="{{ route("admin.chauffeur.addVoiture", $user->chauffeurs) }}" method="post"
                                 class="needs-validation d-inline" novalidate>
                                 @csrf
-                                <button type="submit" class="btn btn-success">Assigner un vehicule</button>
+                                <button type="submit" class="btn btn-success">Attribuer une voiture</button>
                             </form>
                             <a href="{{ route("admin.chauffeur.edit", $user->chauffeurs) }}"
                                 class="btn btn-primary"><i class="ti ti-pencil"> </i></a>

@@ -5,7 +5,7 @@
 @section('content')
     <h1>@yield('title')</h1>
     <div class="d-flex justify-content-end">
-        <a href="{{ route('admin.contrat.index') }}" class="btn btn-danger">Retour</a>
+        <a href="{{ route('admin.contrat.index') }}" class="btn btn-outline-primary">Retour</a>
     </div>
     <div>
         <form action="{{ route('admin.contrat.store') }}" method="Post">
@@ -17,8 +17,8 @@
             @include('shared.select', ['label' => 'Type de contrat', 'name' => 'type_contrat', 'value' => $contrat->type_contrat, 'options' => $type_contrats, 'required' => true])
 
             @include('shared.input', ['label' => 'Duree du contrat', 'name' => 'duree_contrat', 'type' => 'number', 'value' => $contrat->duree_contrat, 'required' => true])
-        
-            @include('shared.input', ['label' => 'Salaire en FCFA', 'name' => 'salaire', 'type' => 'number', 'value' => $contrat->salaire, 'required' => true])
+
+            @include('shared.input', ['label' => 'Salaire', 'name' => 'salaire', 'type' => 'number', 'value' => $contrat->salaire, 'required' => true])
 
             @include('shared.input', ['label' => 'Date d\'embauche', 'name' => 'date_embauche', 'type' => 'date', 'value' => $contrat->date_embauche, 'required' => true])
 

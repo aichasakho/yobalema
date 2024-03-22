@@ -10,7 +10,7 @@ use Illuminate\Foundation\Application;
 
 class HomeController extends Controller
 {
-    private array $categories = array(
+    private array $type_de_voiture = array(
         "Camion" => 'Camion',
         "Voiture" => 'Voiture',
         'Bus' => 'Bus',
@@ -19,12 +19,26 @@ class HomeController extends Controller
 
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
      {
-    //     $voitures_count = Voiture::all()->count();
-    //     $locations_count = Location::all()->count();
-    //     return view('client.index', [
-    //         'voitures_count' => $voitures_count,
-    //         'locations_count' => $locations_count,
-    //         'categories' => $this->categories
-    //     ]);
+         $voitures_count = Voiture::all()->count();
+         $locations_count = Location::all()->count();
+
+         return view('clients.index', [
+             'voitures_count' => $voitures_count,
+             'locations_count' => $locations_count,
+             'type_de_voiture' =>$this->type_de_voiture,
+         ]);
+
+
+
      }
+
+     public function afficher()
+     {
+         return view('clients.chauffeur');
+     }
+
+    public function afficherVoiture()
+    {
+        return view('clients.voiture');
+    }
 }

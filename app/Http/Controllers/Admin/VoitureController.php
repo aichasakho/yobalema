@@ -18,7 +18,7 @@ class VoitureController extends Controller
     ];
 
 
-    private array $categories = array(
+    private array $type_de_voiture = array(
         "Camion" => 'Camion',
         "Voiture" => 'Voiture',
         'Bus' => 'Bus',
@@ -27,37 +27,33 @@ class VoitureController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $Voitures = Voiture::with('chauffeur')
+        $voitures = Voiture::with('chauffeur')
             ->paginate(15);
-        return view('admin.Voiture.index', compact('Voitures'));
+        return view('admin.voiture.index', compact('voitures'));
     }
 
 
-    private function setImage(Voiture $Voiture, VoitureFormRequest $request) {
+    private function setImage(Voiture $voiture, VoitureFormRequest $request) {
 
-        $data = $request->validated();
-
+        $donnee = $request->validated();
         /* @var UploadedFile|null $image */
-        $image = $request->validated('image_Voiture');
+        $image = $request->validated('image_voiture');
 
         if ( $image == null || $image->getError() ){
-            return $data;
+            return $donnee;
         }
         else
         {
-
-            if ($Voiture->image_Voiture)
+            if ($voiture->image_voiture)
             {
-                Storage::disk('public')->delete($Voiture->image_Voiture);
+                Storage::disk('public')->delete($voiture->image_voiture);
             }
-
-            $data['image_Voiture'] = $image->store('Voiture', 'public');
-
+            $donnee['image_voiture'] = $image->store('voiture', 'public');
         }
 
-        return $data;
+        return $donnee;
     }
 
     /**
@@ -65,10 +61,10 @@ class VoitureController extends Controller
      */
     public function create()
     {
-        return view('admin.Voiture.form', [
-            'Voiture' => new Voiture(),
+        return view('admin.voiture.form', [
+            'voiture' => new Voiture(),
             'statuts' => $this->status,
-            'categories' => $this->categories,
+            'type_de_voiture' => $this->type_de_voiture,
         ]);
     }
 
@@ -79,54 +75,53 @@ class VoitureController extends Controller
     {
 
         try {
-            $data = $this->setImage(new Voiture(), $request);
-            $data['km_actuel'] = $data['km_defaut'];
-            Voiture::create($data);
+            $donnee = $this->setImage(new Voiture(), $request);
+            $donnee['km_actuel'] = $donnee['km_par_defaut'];
+            Voiture::create($donnee);
         } catch (\Exception $ex) {
-            dd($ex);
         }
 
-        return to_route('admin.Voiture.index')
-            -> with('success', 'Voiture ajouté avec succès');
+        return to_route('admin.voiture.index')
+            -> with('success', 'Voiture modifié avec succès');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Voiture $Voiture)
+    public function show(Voiture $voiture)
     {
-        return view('admin.Voiture.show',compact('Voiture'));
+        return view('admin.voiture.show',compact('voiture'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Voiture $Voiture)
+    public function edit(Voiture $voiture)
     {
-        return view('admin.Voiture.form', [
-            'Voiture' => $Voiture,
+        return view('admin.voiture.form', [
+            'voiture' => $voiture,
             'statuts' => $this->status,
-            'categories' => $this->categories,
+            'type_de_voiture' => $this->type_de_voiture,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(VoitureFormRequest $request, Voiture $Voiture)
+    public function update(VoitureFormRequest $request, Voiture $voiture)
     {
-        $Voiture->update($this->setImage($Voiture, $request));
+        $voiture->update($this->setImage($voiture, $request));
 
-        return to_route('admin.Voiture.index')
+        return to_route('admin.voiture.index')
             -> with('success', 'Voiture modifié avec succès');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Voiture $Voiture)
+    public function destroy(Voiture $voiture)
     {
-        $Voiture->delete();
+        $voiture->delete();
 
         return redirect()
             -> back()

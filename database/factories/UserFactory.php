@@ -51,7 +51,8 @@ class UserFactory extends Factory
         // Obtenez un ID de rôle aléatoire
         $roleId = \App\Models\RoleUser::inRandomOrder()->value('id');
 
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'role_user_id' => $roleId,
         ]);
+    }
 }

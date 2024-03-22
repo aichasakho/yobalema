@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ $user->contrats?->id }}</td>
                         <td>{{ $user->nom }} {{ $user->prenom }}</td>
-                        <td>{{ $user->chauffeurs?->num_permis }}</td>
+                        <td>{{ $user->chauffeurs?->numero_permis }}</td>
                         <td>{{ $user->contrats?->salaire}}</td>
                         <td>{{ $user->contrats?->date_embauche }}</td>
                         <td>{{ $user->contrats?->type_contrat }}</td>

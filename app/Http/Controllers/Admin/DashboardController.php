@@ -18,7 +18,7 @@ class DashboardController extends Controller
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $chauffeurs = [];
-        $users = User::with('chauffeurs.vehicule', 'contrats')
+        $users = User::with('chauffeurs.voiture', 'contrats')
             -> where('role_user_id', '=',3)
             -> limit(10)->get();
         foreach ($users as $user){

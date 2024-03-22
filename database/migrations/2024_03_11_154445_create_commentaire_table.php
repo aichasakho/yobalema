@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('commentaires', function (Blueprint $table) {
             $table->id();
-            $table->integer('commentaire');
+            $table->string('commentaire');
             $table->foreignIdFor(\App\Models\User::class)
             ->constrained() -> onDelete('cascade');
             $table->foreignIdFor(\App\Models\Chauffeur::class)

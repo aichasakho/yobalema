@@ -1,4 +1,4 @@
-@extends('layouts.clients.base')
+@extends('layouts.client.base')
 
 @section('title', "Accueil")
 
@@ -26,15 +26,13 @@
                         <div class="col-md-4 d-flex align-items-center">
                             <form action="{{ route('admin.location.store') }}" class="request-form ftco-animate bg-primary" novalidate method="POST">
                                 @csrf
-                                <h2>Réservez maintenant <a href="#form-location" class="ml-auto btn btn-primary"></a></h2>
+                                <h2>Réservez maintenant <a href="#" class="ml-auto btn btn-primary"></a></h2>
 
                                 @if(session()->has('error'))
                                     <div class="alert alert-danger">
                                         {{ session()->get('error') }}
                                     </div>
                                 @endif
-
-
                                 <div class="form-group">
                                     @include('shared.select', ['name' => 'voiture_id', 'label'=>'Type de voiture',
                                      'value' => old('voiture_id'), 'options' => $type_de_voiture,'class' => 'text-light'])

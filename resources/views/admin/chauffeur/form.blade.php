@@ -34,15 +34,15 @@
                     @endif
                     <!-- fin de choix utilisateur -->
 
-                    @include('shared.input', ['label' => "Numero du permis", 'name' => "num_permis", 'value' => $chauffeur->num_permis])
+                    @include('shared.input', ['label' => "Numero du permis", 'name' => "numero_permis", 'value' => $chauffeur->numero_permis])
 
                     @include('shared.select', ['label' => "Categorie", 'name' => "categorie", 'value' => $chauffeur->categorie, 'options' => $categories])
 
-                    @include('shared.input', ['type' => 'date', 'name' => "date_delivrance", 'label' => "Date de delivrance", 'value' => $chauffeur->date_delivrance])
+                    @include('shared.input', ['type' => 'date', 'name' => "date_emission", 'label' => "Date d\'émission", 'value' => $chauffeur->date_emission])
 
                     @include('shared.input', ['type' => 'date', 'name' => "date_expiration", 'label' => "Date de expiration", 'value' => $chauffeur->date_expiration])
 
-                    @include('shared.input', ['type' => 'number', 'name' => "annee_experience", 'label' => 'Annees d\'experience', 'value' => $chauffeur->annee_experience])
+                    @include('shared.input', ['type' => 'number', 'name' => "experience", 'label' => 'Experience', 'value' => $chauffeur->experience])
 
                     @include('shared.input', ['type' => 'file', 'name' => 'image', 'label' => 'Photo du chauffeur'])
                     <button type="submit" class="btn btn-primary">
@@ -60,7 +60,7 @@
     <script>
         window.onload = function() {
           var today = new Date().toISOString().split('T')[0];
-          document.getElementById("date_delivrance").setAttribute("max", today);
+          document.getElementById("date_emission").setAttribute("max", today);
           document.getElementById("date_expiration").setAttribute("min", today);
         };
       </script>

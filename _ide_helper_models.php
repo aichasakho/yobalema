@@ -13,7 +13,7 @@
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $num_permis
@@ -29,7 +29,7 @@ namespace App\Models{
  * @property int $user_id
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Location> $locations
  * @property-read int|null $locations_count
- * @property-read \App\Models\Vehicule|null $vehicule
+ * @property-read \App\Models\Vehicule|null $voiture
  * @method static \Illuminate\Database\Eloquent\Builder|Chauffeur newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chauffeur newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Chauffeur query()
@@ -53,7 +53,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -85,7 +85,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $heure_depart
@@ -121,7 +121,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $mode
@@ -149,7 +149,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -172,7 +172,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $nom
@@ -220,7 +220,7 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $matricule

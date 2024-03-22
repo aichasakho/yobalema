@@ -2,171 +2,157 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\CityController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LocationFormRequest;
 use App\Models\Location;
-use App\Models\Vehicule;
-use App\Services\OpenWeatherMapService;
+use App\Models\Voiture;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Support\Carbon;
+use App\Services\NominatimService;
 
 class LocationController extends Controller
 {
+    protected $nominatimService;
 
-    protected OpenWeatherMapService $openWeatherMapService;
-
-    public function __construct(OpenWeatherMapService $openWeatherMapService)
+    public function __construct(NominatimService $nominatimService)
     {
-        $this->openWeatherMapService = $openWeatherMapService;
+        $this->nominatimService = $nominatimService;
     }
 
-    /**
-     * @throws GuzzleException
-     * @throws GuzzleException
-     */
-    public function calculateDistance($city1, $city2): float|int
+    public function geocodeAddresses($depart, $arrivee): float|int
     {
+        // Géocodage des adresses de départ et d'arrivée
+        $departResult = $this->nominatimService->geocode($depart);
+        $arriveeResult = $this->nominatimService->geocode($arrivee);
 
-        // Obtenez les coordonnées géographiques des deux villes
-        $coordinatesCity1 = $this->openWeatherMapService->getCityCoordinates($city1);
-        $coordinatesCity2 = $this->openWeatherMapService->getCityCoordinates($city2);
+        // Vérifiez si les résultats de géocodage sont valides
+        if (!empty($departResult) && !empty($arriveeResult)) {
+            // Vérifiez si les indices 0 existent dans les tableaux $departResult et $arriveeResult
+            if (isset($departResult[0]['lat'], $departResult[0]['lon'], $arriveeResult[0]['lat'], $arriveeResult[0]['lon'])) {
+                // Récupération des coordonnées géographiques des localités de départ et d'arrivée
+                $departLatitude = $departResult[0]['lat'];
+                $departLongitude = $departResult[0]['lon'];
+                $arriveeLatitude = $arriveeResult[0]['lat'];
+                $arriveeLongitude = $arriveeResult[0]['lon'];
 
-        // Créez les objets de coordonnées
-        // Utilisez la formule de Haversine pour calculer la distance
-        return $this->haversineDistance(
-            $coordinatesCity1['lat'], $coordinatesCity1['lon'],
-            $coordinatesCity2['lat'], $coordinatesCity2['lon']
-        );
+                // Appel de la méthode calculateDistance() avec les 4 arguments requis
+                return $this->calculateDistance($departLatitude, $departLongitude, $arriveeLatitude, $arriveeLongitude);
+            } else {
+                // Renvoyer une réponse JSON avec un message d'erreur
+                return 0;
+            }
+        } else {
+            // Renvoyer une réponse JSON avec un message d'erreur
+            return -1;
+        }
     }
 
-    private function haversineDistance($lat1, $lon1, $lat2, $lon2): float|int
+    public function calculateDistance($lat1, $lon1, $lat2, $lon2): float|int
     {
-        $earthRadius = 6371; // Rayon moyen de la Terre en kilomètres
+        $earthRadius = 6371; // Rayon de la Terre en kilomètres
 
         $dLat = deg2rad($lat2 - $lat1);
         $dLon = deg2rad($lon2 - $lon1);
 
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon / 2) * sin($dLon / 2);
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return $earthRadius * $c;
+        $distance = $earthRadius * $c;
+
+        return $distance;
     }
 
-    public function clocation()
-    {
-        $locations = Location::with('vehicule', 'chauffeur')
-            ->where('client_id', '=', auth()->user()->id)
-            ->get();
-
-        $statut = [];
-        foreach ($locations as $location) {
-            if ($location->heure_arrivee !== null) {
-                $arrivee = Carbon::parse($location->heure_arrivee);
-                $now = Carbon::now();
-                if($arrivee->gt($now)) {
-                    $statut[$location->id] = 'En cours';
-                } else {
-                    $statut[$location->id] = 'Terminée';
-                }
-            } else {
-                $statut[$location->id] = 'Pas Encore de payement';
-            }
-        }
-
-
-        return view('locations.my-locations',
-            ['locations' => $locations, 'statut' => $statut]);
-    }
-
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $locations = Location::all();
-        return view('locations.index', ['locations' => $locations]);
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     * @throws GuzzleException
-     */
     public function store(LocationFormRequest $request)
     {
-        // Montant 500 par km
+        // Montant 200 par km
 
         $location = $request->validated();
 
-        $distance = $this->calculateDistance($location['lieu_depart'], $location['lieu_destination']);
+        $depart = $location['lieu_depart'];
+        $arrivee = $location['lieu_d_arrive'];
 
-        $montant = 500 * $distance;
+        // Géocodage des adresses de départ et d'arrivée
+        $distance = $this->geocodeAddresses($depart, $arrivee);
 
-        $location['prix_estime'] = $montant;
+        $montant = 200 * $distance;
+
+        $location['prix_du_trajet'] = $montant;
         $location['client_id'] = auth()->user()->id;
 
-        // Recuperation des vehicule dans la categorie disponible;
+        // Recuperation des voiture dans la categorie disponible;
 
-        $vehicule = Vehicule::where('categorie', '=', $location['vehicule_id'])
-                    ->whereNotNull('chauffeur_id')
-                    ->where('statut', '=', 'DISPONIBLE')
-                    ->first();
+        $voiture = Voiture::where('type_de_voiture', '=', $location['voiture_id'])
+            ->whereNotNull('chauffeur_id')
+            ->where('statut', '=', 'Marche')
+            ->first();
 
-        if ($vehicule == null) {
+        if ($voiture == null) {
             return redirect()
                 ->back()
-                ->with('error', 'Vehicule non disponible dans cette categorie pour l\'instant');
+                ->with('error', 'Voiture non disponible dans cette categorie pour l\'instant');
         }
 
-        $location['vehicule_id'] = $vehicule->id;
-
-        $location['chauffeur_id'] = $vehicule->chauffeur->id;
-
-        if ($location['vehicule_id'] == null || $location['chauffeur_id'] == null) {
+        if ($voiture->id == null || $voiture->chauffeur == null || $voiture->chauffeur->id == null) {
             return redirect()
                 ->back()
-                ->with('error', 'Vehicule non disponible');
+                ->with('error', 'Voiture non disponible');
         }
+
+        $location['voiture_id'] = $voiture->id;
+
+        $location['chauffeur_id'] = $voiture->chauffeur->id;
+
+        /*if ($location['voiture_id'] == null || $location['chauffeur_id'] == null) {
+            return redirect()
+                ->back()
+                ->with('error', 'Voiture non disponible');
+        }*/
 
         Location::create($location);
-        $vehicule->update(['statut' => 'EN LOCATION']);
+        $voiture->update(['statut' => 'location']);
 
-        return to_route('location.client')
-            ->with('success', 'location Créé avec success');
+        return redirect()
+            ->route('location.client')
+            ->with('success', 'Location créée avec succès');
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
+    public function index()
+    {
+        $locations = Location::all();
+        return view('clients.locations.index', ['locations' => $locations]);
+    }
+
+    public function clientlocation()
+    {
+        $locations = Location::with('voiture', 'chauffeur')
+            ->where('client_id', '=', auth()->user()->id)
+            ->get();
+
+        return view('clients.locations.index', ['locations' => $locations]);
+    }
+
+
+
+
+
+
     public function show(Location $location)
     {
         return view('admin.locations.show', ['location' => $location]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Location $location)
     {
         return view('admin.locations.form', ['location' => $location]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(LocationFormRequest $request, Location $location)
     {
         $location->update($request->validated());
-        return to_route('admin.location.index')
-            ->with('success', 'Location mis a jour');
+        return redirect()->route('admin.location.index')->with('success', 'Location mise à jour');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Location $location)
     {
         $location->delete();

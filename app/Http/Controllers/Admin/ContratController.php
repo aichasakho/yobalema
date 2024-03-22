@@ -16,7 +16,7 @@ class ContratController extends Controller
         $users = [];
         $list_users = User::with('chauffeurs')->get();
         foreach ($list_users as $user){
-            if($user->chauffeurs?->num_permis != null){
+            if($user->chauffeurs?->numero_permis != null){
                 $users[] = $user;
             }
         }
@@ -26,11 +26,11 @@ class ContratController extends Controller
     public function getChauffeursId()
     {
         $chauffeurs = $this->getUsers();
-        $ids = [];
+        $id = [];
         foreach ($chauffeurs as $chauffeur){
-            $ids[$chauffeur->nom . $chauffeur->prenom] = $chauffeur->id;
+            $id[$chauffeur->nom . $chauffeur->prenom] = $chauffeur->id;
         }
-        return $ids;
+        return $id;
     }
 
     public function getContrats()
@@ -51,7 +51,6 @@ class ContratController extends Controller
     public function index()
     {
         $contrats = $this->getContrats();
-//        dd($contrats);
         return view('admin.contrats.index', [
             'users' => $contrats,
         ]);
@@ -114,7 +113,7 @@ class ContratController extends Controller
         return to_route('admin.contrat.index', [
             'chauffeurs' => $chauffeurs,
         ])
-            ->with('success', "Contrat mis a jour");
+            ->with('success', "Contrat modifié avec succès");
     }
 
     /**
@@ -123,6 +122,6 @@ class ContratController extends Controller
     public function destroy(Contrat $contrat)
     {
         $contrat->delete();
-        return redirect()->back()->with('success', "Contrat supprimé");
+        return redirect()->back()->with('success', "Contrat supprimé avec succès");
     }
 }

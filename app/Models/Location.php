@@ -29,6 +29,9 @@ class Location extends Model
     {
         return $this -> belongsTo(Voiture::class);
     }
-
+    public static function type_de_voitures()
+    {
+        return Voiture::all()->pluck('id','type_de_voiture')->toArray();
+    }
 
 }

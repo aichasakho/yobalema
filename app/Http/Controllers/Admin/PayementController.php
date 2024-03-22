@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Location;
 use App\Models\Payement;
-use App\Models\Vehicule;
+use App\Models\Voiture;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\PayementFormRequest;
@@ -38,23 +38,23 @@ class PayementController extends Controller
 
         $location = Location::find($payer['location_id']);
 
-        $payer['montant'] = $location->prix_estime;
+        $payer['montant'] = $location->prix_du_trajet;
         $payer['date_paiement'] = now();
 
         // distance = montant / 500
         $distance = $payer['montant'] / 500;
         // vitesse moyenne 60mk/heure calcule du heure d'arrivee
 
-        $depart = Carbon::parse($location->heure_depart);
+        $depart = Carbon::parse($location->debut_trajet);
 
         $arrivee = $depart->addHours($distance / 60);
 
-        $location->update(['heure_arrivee' => $arrivee]);
+        $location->update(['fin_trajet' => $arrivee]);
 
         Payement::create($payer);
 
-        $vehicule = Vehicule::find($location->vehicule_id);
-        $vehicule->update(['km_actuel' => $vehicule->km_actuel + $distance]);
+        $voiture = Voiture::find($location->voiture_id);
+        $voiture->update(['km_actuel' => $voiture->km_actuel + $distance]);
 
         return to_route('location.client')
             ->with('success', 'Payement effectué avec succès');

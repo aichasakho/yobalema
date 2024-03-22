@@ -33,10 +33,10 @@ class UserController extends Controller
 
     private function setRoleArray()
     {
-        $datas = RoleUser::all();
+        $donnees = RoleUser::all();
         $roles = array();
-        foreach ($datas as $data) {
-            $roles[$data->name] = $data->id;
+        foreach ($donnees as $donnee) {
+            $roles[$donnee->name] = $donnee->id;
         }
 
         return $roles;

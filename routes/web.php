@@ -10,7 +10,6 @@ use App\Http\Controllers\Admin\ContratController;
 use App\Http\Controllers\Admin\VoitureController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\RoleUserController;
-use App\Http\Controllers\Admin\VehiculeController;
 use App\Http\Controllers\Admin\ChauffeurController;
 use App\Http\Controllers\Admin\DashboardController;
 
@@ -25,9 +24,18 @@ use App\Http\Controllers\Admin\DashboardController;
 |
 */
 
+
+
+Route::get('/', function(){
+    return view('clients.index');
+});
+
 Route::get('/coordonne', [\App\Http\Controllers\CityController::class, 'testWeather']);
 
-Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/clients/index', [HomeController::class, 'index'])->name('index');
+Route::get('/clients/afficher', [HomeController::class, 'afficher'])->name('afficherChauffeur');
+Route::get('/clients/afficherVoiture', [HomeController::class, 'afficherVoiture'])->name('afficherVoiture');
+
 
 Route::middleware('auth')->group(function () {
     Route::get("/profile", [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/location/client', [LocationController::class, 'clocation'])
+Route::get('/location/client', [LocationController::class, 'clientlocation'])
     ->name('location.client')
     ->middleware('auth')
 ;
@@ -56,12 +64,12 @@ Route::prefix('admin') -> name("admin.")
         Route::resource('payement', \App\Http\Controllers\Admin\PayementController::class)
             ->except('show', 'edit', 'create');
 
-        Route::post('/assinge/{chauffeur}',[ChauffeurController::class, 'addVehicule'])
-            ->name('chauffeur.addVehicule');
+        Route::post('/assinge/{chauffeur}',[ChauffeurController::class, 'addVoiture'])
+            ->name('chauffeur.addVoiture');
     });
 
-Route::post('/noter', [ChauffeurController::class, 'noter'])
-    ->name('note.store')
+Route::post('/commenter', [ChauffeurController::class, 'commenter'])
+    ->name('commentaire.store')
     ->middleware('auth');
 
 require __DIR__.'/auth.php';

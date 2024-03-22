@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Doctrine\Inflector\Rules\French\Rules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class VoitureFormRequest extends FormRequest
 {
@@ -23,7 +25,7 @@ class VoitureFormRequest extends FormRequest
     {
         // TODO: completer les regles de validation
         return [
-            'matricule' => ['string', 'required'],
+            'matricule' => ['string', 'required',Rule::unique('voitures')->ignore($this->voiture)],
             'date_achat' => ['string', 'required'],
             'km_par_defaut' => ['integer', 'required'],
             'statut' => ['required', 'string'],

@@ -32,7 +32,7 @@ return new class extends Migration
                 -> cascadeOnUpdate()
                 -> cascadeOnDelete();
 
-            $table->foreign('client_id')
+            $table->foreign('chauffeur_id')
                 -> references('id')
                 -> on('users')
                 -> constrained()
