@@ -64,6 +64,7 @@ class LocationController extends Controller
     public function store(LocationFormRequest $request)
     {
         // Montant 200 par km
+        $montantParKm = 200;
 
         $location = $request->validated();
 
@@ -73,7 +74,11 @@ class LocationController extends Controller
         // Géocodage des adresses de départ et d'arrivée
         $distance = $this->geocodeAddresses($depart, $arrivee);
 
-        $montant = 200 * $distance;
+        if ($distance === -1) {
+            return redirect()->back()->with('error', 'Adresse invalide');
+        }
+
+        $montant = $montantParKm * $distance;
 
         $location['prix_du_trajet'] = $montant;
         $location['client_id'] = auth()->user()->id;
