@@ -64,7 +64,7 @@ class ChauffeurController extends Controller
     }
 
 
-    public function addVoiture(Chauffeur $chauffeur)
+    public function ajoutVoiture(Chauffeur $chauffeur)
     {
         $error = '';
         if ($chauffeur->is_permis_valide) {
@@ -198,7 +198,8 @@ class ChauffeurController extends Controller
      */
     public function update(ChauffeurFormRequest $request, Chauffeur $chauffeur)
     {
-        $chauffeur->update($request->validated());
+        $donnee = $this->setImage($chauffeur, $request);
+        $chauffeur->update($donnee);
         return to_route('admin.chauffeur.index')
             ->with('success', 'Chauffeur modifié avec succès');
     }

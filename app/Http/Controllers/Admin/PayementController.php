@@ -41,9 +41,9 @@ class PayementController extends Controller
         $payer['montant'] = $location->prix_du_trajet;
         $payer['date_paiement'] = now();
 
-        // distance = montant / 500
-        $distance = $payer['montant'] / 500;
-        // vitesse moyenne 60mk/heure calcule du heure d'arrivee
+        // distance = montant / 200
+        $distance = $payer['montant'] / 200;
+        // vitesse moyenne 60km/heure calcule du heure d'arrivee
 
         $depart = Carbon::parse($location->debut_trajet);
 
@@ -51,10 +51,12 @@ class PayementController extends Controller
 
         $location->update(['fin_trajet' => $arrivee]);
 
+
         Payement::create($payer);
 
         $voiture = Voiture::find($location->voiture_id);
-        $voiture->update(['km_actuel' => $voiture->km_actuel + $distance]);
+        $voiture->update(['km_actuel' => $voiture->km_actuel + $distance, 'statut' => 'Marche']);
+
 
         return to_route('location.client')
             ->with('success', 'Payement effectué avec succès');

@@ -1,6 +1,6 @@
 @extends('layouts.client.base')
 
-@section('title', 'Mes Locations')
+@section('title', 'Liste des locations')
 
 @section('content')
     <div class="bg-secondary" style="height: 100px;"></div>
@@ -22,15 +22,46 @@
         <div class="row vsatck gap-3">
             @foreach($locations as $location)
                 <div class="card mb-5 col-md-4">
+                    <div class="card-header">
+                        <h4 class="card-title">Facture</h4>
+                    </div>
 
-                    <div class="card-body">
-                        <p class="card-text">Départ: {{ $location?->client?->user?->nom }}</p>
+                    <div class="card-body w-250 ">
+                        <p class="card-text">Client: {{ $location?->client?->nom }}</p>
                         <p class="card-text">Départ: {{ $location->debut_trajet }}</p>
                         <p class="card-text">Arrivée: {{ $location->fin_trajet ?? 'Non défini' }}</p>
-                        <p class="card-text">Montant à payer: {{ $location->prix_du_trajet }} Fcfa</p>
+                        <p class="card-text">Montant à payer: {{ round($location->prix_du_trajet) }} Fcfa</p>
                         <p class="card-text">Lieu de Départ: {{ $location->lieu_depart }}</p>
                         <p class="card-text">Lieu d'arrivée: {{ $location->lieu_d_arrive }}</p>
                         <p class="card-text">Chauffeur en charge: {{ $location?->chauffeur?->user?->nom }}</p>
+
+                        @if(!$location->fin_trajet)
+
+                            <p class="card-text">Voiture: {{ $location->voiture?->matricule }}</p>
+                            <form action="{{ route('admin.payement.store') }}" method="POST" class="needs-validation" novalidate>
+                                @csrf
+                                {{--@include('shared.input', ['label' => "Mode de paiement:",
+                                'name' => 'mode', 'type' => 'text', 'value' =>old('mode')])
+                                --}}
+                                <div>
+                                    <label for="mode">Mode de paiement:</label>
+                                    <select name="mode" id="mode">
+                                        <option value="carte">Espèces</option>
+                                        <option value="carte">Carte de crédit</option>
+                                        <option value="paypal">PayPal</option>
+                                        <!-- Ajoutez d'autres options de paiement si nécessaire -->
+                                    </select>
+                                </div>
+
+                                <!-- Bouton de soumission -->
+                                <button type="submit">Valider le paiement</button>
+
+                                <input type="hidden" name="location_id" value="{{ $location->id }}">
+
+                            </form>
+
+
+
                         @if($location->chauffeur_id !== null)
                             <form action="{{ route('commentaire.store') }}" method="POST">
                                 @csrf
@@ -44,32 +75,16 @@
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary">Commenter</button>
                                 </div>
+
+                                <div>
+                                    <a href="{{ route('facture.show', ['location' => $location]) }}" class="btn btn-primary">Télécharger la facture PDF</a>
+
+                                </div>
+
                             </form>
                         @endif
 
-                        @if(!$location->fin_trajet)
 
-                            <p class="card-text">Voiture: {{ $location->voiture?->matricule }}</p>
-                            <form action="{{ route('admin.payement.store') }}" method="POST" class="needs-validation" novalidate>
-                                @csrf
-                                {{--@include('shared.input', ['label' => "Mode de paiement:",
-                                'name' => 'mode', 'type' => 'text', 'value' =>old('mode')])
-                                --}}
-                                <div>
-                                    <label for="mode">Mode de paiement:</label>
-                                    <select name="mode" id="mode">
-                                        <option value="carte">Carte de crédit</option>
-                                        <option value="paypal">PayPal</option>
-                                        <!-- Ajoutez d'autres options de paiement si nécessaire -->
-                                    </select>
-                                </div>
-
-                                <!-- Bouton de soumission -->
-                                <button type="submit">Valider le paiement</button>
-
-                                <input type="hidden" name="location_id" value="{{ $location->id }}">
-
-                            </form>
                             <!--supprimer la location en cas d'annulation ou de rejet -->
                             <form action="{{ route('admin.location.destroy', ['location' => $location]) }}" method="POST"
                                   class="mt-4 needs-validation" novalidate>
@@ -78,6 +93,7 @@
                                 <button type="submit" class="btn btn-danger">
                                     Annuler la location
                                 </button>
+
                             </form>
                         @endif
 

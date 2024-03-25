@@ -37,18 +37,14 @@
                 @auth
 
                     @if(Auth::user()->role_user_id == 1 && Route::has('admin.dashboard'))
-                        <li class="nav-item ">
+                        <li class="nav-item active">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link">
                                 {{ __('Tableau de bord') }}
                             </a>
                         </li>
                     @endif
 
-                    @if(Route::has('client.profil'))
-                        <li>
-                            <a href="{{ route('client.profil') }}" class="nav-link">Login</a>
-                        </li>
-                    @endif
+
 
                     <form action="{{ route('logout') }}" method="post" class="d-inline">
                         @csrf
@@ -58,6 +54,7 @@
                             {{ __('Se Déconnecter') }}
                         </button>
                     </form>
+
                 @endauth
 
             </ul>

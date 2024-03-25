@@ -8,6 +8,8 @@ use App\Models\Location;
 use App\Models\Voiture;
 use GuzzleHttp\Exception\GuzzleException;
 use App\Services\NominatimService;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\View;
 
 class LocationController extends Controller
 {
@@ -20,6 +22,8 @@ class LocationController extends Controller
 
     public function geocodeAddresses($depart, $arrivee): float|int
     {
+        ;
+
         // Géocodage des adresses de départ et d'arrivée
         $departResult = $this->nominatimService->geocode($depart);
         $arriveeResult = $this->nominatimService->geocode($arrivee);
@@ -27,21 +31,23 @@ class LocationController extends Controller
         // Vérifiez si les résultats de géocodage sont valides
         if (!empty($departResult) && !empty($arriveeResult)) {
             // Vérifiez si les indices 0 existent dans les tableaux $departResult et $arriveeResult
-            if (isset($departResult[0]['lat'], $departResult[0]['lon'], $arriveeResult[0]['lat'], $arriveeResult[0]['lon'])) {
+            if (isset($departResult['lat'], $departResult['lon'], $arriveeResult[0]['lat'], $arriveeResult[0]['lon'])) {
                 // Récupération des coordonnées géographiques des localités de départ et d'arrivée
-                $departLatitude = $departResult[0]['lat'];
-                $departLongitude = $departResult[0]['lon'];
-                $arriveeLatitude = $arriveeResult[0]['lat'];
-                $arriveeLongitude = $arriveeResult[0]['lon'];
+                $departLatitude = $departResult['lat'];
+                $departLongitude = $departResult['lon'];
+                $arriveeLatitude = $arriveeResult['lat'];
+                $arriveeLongitude = $arriveeResult['lon'];
 
                 // Appel de la méthode calculateDistance() avec les 4 arguments requis
                 return $this->calculateDistance($departLatitude, $departLongitude, $arriveeLatitude, $arriveeLongitude);
             } else {
-                // Renvoyer une réponse JSON avec un message d'erreur
+                // Rendu de la vue avec les résultats de géocodage
                 return 0;
+                //return view('clients.index', compact('departResult', 'arriveeResult'));
             }
         } else {
             // Renvoyer une réponse JSON avec un message d'erreur
+            //return response()->json(['error' => 'Erreur de géocodage']);
             return -1;
         }
     }
@@ -61,6 +67,15 @@ class LocationController extends Controller
         return $distance;
     }
 
+    /*public function updateLocation(NominatimService $nominatimService)
+    {
+        // Effectuer la requête à Nominatim pour obtenir les nouvelles coordonnées géographiques
+        $coordinates = $nominatimService->getCoordinates();
+
+        // Retourner les coordonnées au format JSON
+        return response()->json($coordinates);
+    }*/
+
     public function store(LocationFormRequest $request)
     {
         // Montant 200 par km
@@ -73,6 +88,7 @@ class LocationController extends Controller
 
         // Géocodage des adresses de départ et d'arrivée
         $distance = $this->geocodeAddresses($depart, $arrivee);
+
 
         if ($distance === -1) {
             return redirect()->back()->with('error', 'Adresse invalide');

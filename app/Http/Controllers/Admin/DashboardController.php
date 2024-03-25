@@ -22,7 +22,7 @@ class DashboardController extends Controller
             -> where('role_user_id', '=',3)
             -> limit(10)->get();
         foreach ($users as $user){
-            if($user->chauffeurs?->num_permis != null){
+            if($user->chauffeurs?->numero_permis != null){
                 $chauffeurs[] = $user;
             }
         }

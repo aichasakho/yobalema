@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\FactureController;
 use Illuminate\Support\Facades\Route;
-use App\Services\OpenWeatherMapService;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
@@ -26,15 +26,9 @@ use App\Http\Controllers\Admin\DashboardController;
 
 
 
-Route::get('/', function(){
-    return view('clients.index');
-});
 
 Route::get('/coordonne', [\App\Http\Controllers\CityController::class, 'testWeather']);
 
-Route::get('/clients/index', [HomeController::class, 'index'])->name('index');
-Route::get('/clients/afficher', [HomeController::class, 'afficher'])->name('afficherChauffeur');
-Route::get('/clients/afficherVoiture', [HomeController::class, 'afficherVoiture'])->name('afficherVoiture');
 
 
 Route::middleware('auth')->group(function () {
@@ -43,6 +37,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/',[HomeController::class,'index'])->name('Home');
+
+Route::get('/clients/index', [HomeController::class, 'index'])->name('index');
+Route::get('/clients/afficher', [HomeController::class, 'afficher'])->name('afficherChauffeur');
+Route::get('/clients/afficherVoiture', [HomeController::class, 'afficherVoiture'])->name('afficherVoiture');
+Route::get('facture/{location}', [FactureController::class, 'show'])->name('facture.show');
+
+//Route::get('/update-location', [LocationController::class, 'updateLocation']);
 Route::get('/location/client', [LocationController::class, 'clientlocation'])
     ->name('location.client')
     ->middleware('auth')
@@ -64,7 +66,7 @@ Route::prefix('admin') -> name("admin.")
         Route::resource('payement', \App\Http\Controllers\Admin\PayementController::class)
             ->except('show', 'edit', 'create');
 
-        Route::post('/assinge/{chauffeur}',[ChauffeurController::class, 'addVoiture'])
+        Route::post('/attribuer/{chauffeur}',[ChauffeurController::class, 'ajoutVoiture'])
             ->name('chauffeur.addVoiture');
     });
 

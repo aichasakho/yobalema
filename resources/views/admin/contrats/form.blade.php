@@ -8,7 +8,7 @@
         <a href="{{ route('admin.contrat.index') }}" class="btn btn-outline-primary">Retour</a>
     </div>
     <div>
-        <form action="{{ route('admin.contrat.store') }}" method="Post">
+        <form action="{{$contrat-> exists ? route('admin.contrat.update',$contrat): route('admin.contrat.store')}} " method="Post">
             @csrf
             @method($contrat->exists ? "PUT" : "POST")
 

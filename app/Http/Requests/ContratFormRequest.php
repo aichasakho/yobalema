@@ -25,7 +25,7 @@ class ContratFormRequest extends FormRequest
         return [
             //'matricule' => ['string', 'required',Rule::unique('voitures')->ignore($this->voiture)],
 
-            'user_id' => ['required', 'integer', Rule::unique('contrats')->ignore($this->contrats)],
+            'user_id' => ['required', 'integer', Rule::unique('contrats')->ignore($this->contrat)],
             'salaire' => ['required', 'integer'],
             'duree_contrat' => ['required'],
             'type_contrat' => ['required', 'string'],

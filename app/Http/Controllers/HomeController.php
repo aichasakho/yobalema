@@ -39,6 +39,6 @@ class HomeController extends Controller
 
     public function afficherVoiture()
     {
-        return view('clients.voiture');
+        return view('clients.voiture',['voitures'=> Voiture::all()]);
     }
 }

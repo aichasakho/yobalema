@@ -4,6 +4,13 @@
 
 @section('content')
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+
     <div class="hero-wrap ftco-degree-bg" style="background-image: url('{{asset('clients/images/bg_1.jpg')}}');" data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -98,7 +105,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p><a href="#" class="btn btn-primary py-3 px-4">Réservez la voiture de vos rêves</a></p>
+                                <p><a href="{{ route('afficherVoiture') }}" class="btn btn-primary py-3 px-4">Réservez la voiture de vos rêves</a></p>
                             </div>
                         </div>
                     </div>
@@ -113,7 +120,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-12 heading-section text-center ftco-animate mb-5">
-                    <span class="subheading">Nos offres</span>
+                    <span class="subheading">Nos Offres</span>
                 </div>
             </div>
             <div class="row">
@@ -126,60 +133,126 @@
                                 <div class="text">
                                     <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
                                     <div class="d-flex mb-3">
-                                        <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">$500 <span>/day</span></p>
+                                        <p class="price ml-auto">20000F<span>/jour</span></p>
                                     </div>
-                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="item">
                             <div class="car-wrap rounded ftco-animate">
-                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/car-2.jpg')}}');">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/voiture2.jpg')}}');">
                                 </div>
                                 <div class="text">
-                                    <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+                                    <h2 class="mb-0"><a href="#">FORD</a></h2>
                                     <div class="d-flex mb-3">
-                                        <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">$500 <span>/day</span></p>
+                                        <p class="price ml-auto">25000F <span>/jour</span></p>
                                     </div>
-                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="item">
                             <div class="car-wrap rounded ftco-animate">
-                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/car-3.jpg')}}');">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/voiture3.jpg')}}');">
                                 </div>
                                 <div class="text">
-                                    <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
+                                    <h2 class="mb-0"><a href="#">TOYOTA</a></h2>
                                     <div class="d-flex mb-3">
-                                        <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">$500 <span>/day</span></p>
+                                        <p class="price ml-auto">30000F <span>/jour</span></p>
                                     </div>
-                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Book now</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
                                 </div>
                             </div>
                         </div>
                         <div class="item">
                             <div class="car-wrap rounded ftco-animate">
-                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/car-4.jpg)')}}');">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/camion1.jpg')}}');">
+                                </div>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="#">BouMagg Bi</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <p class="price ml-auto">50000F <span>/jour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/camion2.jpg')}}');">
+                                </div>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="#">Ndimal Ndiabot</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <p class="price ml-auto">60000F <span>/jour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/camion3.jpg')}}');">
+                                </div>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="#">Grand Camion</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <p class="price ml-auto">65000F <span>/jour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/bus1.jpg')}}');">
                                 </div>
                                 <div class="text">
                                     <h2 class="mb-0"><a href="#">Mercedes Grand Sedan</a></h2>
                                     <div class="d-flex mb-3">
-                                        <span class="cat">Cheverolet</span>
-                                        <p class="price ml-auto">$500 <span>/day</span></p>
+                                        <p class="price ml-auto">45000F <span>/jour</span></p>
                                     </div>
-                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Commandez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
                                 </div>
                             </div>
                         </div>
+                        <div class="item">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/bus2.jpg')}}');">
+                                </div>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="#">Bus confortable</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <p class="price ml-auto">40000F <span>/jour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="car-wrap rounded ftco-animate">
+                                <div class="img rounded d-flex align-items-end" style="background-image: url('{{asset('clients/images/bus3.jpg')}}');">
+                                </div>
+                                <div class="text">
+                                    <h2 class="mb-0"><a href="#">Grand Bus</a></h2>
+                                    <div class="d-flex mb-3">
+                                        <p class="price ml-auto">45000F <span>/jour</span></p>
+                                    </div>
+                                    <p class="d-flex mb-0 d-block"><a href="#" class="btn btn-primary py-2 mr-1">Louez maintenant</a> <a href="#" class="btn btn-secondary py-2 ml-1">Details</a></p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+
+    <div id="map"></div>
+
 
 
     <section class="ftco-counter ftco-section img bg-light" id="section-counter">
@@ -228,27 +301,84 @@
     <!-- loader -->
     <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
-    <div id="map" style="height: 400px;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
 
     <script>
-        function initMap() {
-            // Coordonnées pour centrer la carte
-            var myLatLng = {lat: -34.397, lng: 150.644};
 
-            // Créer une carte avec la clé API
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: myLatLng,
-                zoom: 8
-            });
+        // Initialiser la carte
+        var map = L.map('map').setView([51.505, -0.09], 13);
 
-            // Ajouter un marqueur
-            var marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                title: 'Hello World!'
+        // Ajouter une couche de tuiles de la carte (par exemple, OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Récupérer les coordonnées géographiques depuis Nominatim
+        var latitude = 48.8566; // Coordonnées de latitude
+        var longitude = 2.3522; // Coordonnées de longitude
+
+        // Ajouter un marqueur à la position
+        L.marker([latitude, longitude]).addTo(map);
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+    {{--<div id="map" style="height: 400px;"></div>
+
+    <script>
+         /*// Code d'initialisation de la carte avec Leaflet
+        var map = L.map('map').setView([{{ $departResult['lat'] }}, {{ $departResult['lon'] }}], 12);
+
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        var marker = L.marker([{{ $departResult['lat'] }}, {{ $departResult['lon'] }}]).addTo(map);
+
+        // Fonction pour mettre à jour la localisation en temps réel
+        function updateLocation() {
+            // Effectuer une requête AJAX pour récupérer les nouvelles coordonnées géographiques depuis Nominatim
+            $.ajax({
+                url: '/update-location', // Remplacez l'URL par l'endpoint de votre route Laravel
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Mettre à jour la position du marqueur sur la carte avec les nouvelles coordonnées
+                    var latitude = response.latitude;
+                    var longitude = response.longitude;
+                    // ... Code pour mettre à jour la position du marqueur sur la carte ...
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
             });
         }
-    </script>
+
+        // Mettre à jour la localisation toutes les 5 secondes
+        setInterval(updateLocation, 5000);
+
+        // Définir une fonction pour mettre à jour la position du marqueur sur la carte
+        function updateMarkerPosition(latitude, longitude) {
+            marker.setLatLng([latitude, longitude]);
+        }
+
+        // À l'endroit approprié dans votre code
+        updateMarkerPosition({{ $departResult['lat'] }}, {{ $departResult['lon'] }});
+*/
+
+    </script>--}}
 
 
 @endsection

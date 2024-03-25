@@ -180,7 +180,7 @@
                                     </td>
                                     <td class="border-bottom-0">
                                         <h6 class="fw-semibold mb-0 fs-4">
-                                            {{ $chauffeur?->chauffeurs->annee_experience }} ans
+                                            {{ $chauffeur?->chauffeurs->experience }} ans
                                         </h6>
                                     </td>
                                 </tr>

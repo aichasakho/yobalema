@@ -25,6 +25,10 @@ class Chauffeur extends Model
         return $this->belongsTo(Voiture::class);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
     /**
      * @return HasMany
      */
