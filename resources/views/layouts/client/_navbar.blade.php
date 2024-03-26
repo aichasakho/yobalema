@@ -19,7 +19,6 @@
                     </li>
                 @endif
 
-                <li class="nav-item active"><a href="{{ route('afficherChauffeur') }}" class="nav-link">Chauffeurs</a></li>
                 <li class="nav-item active"><a href="{{ route('afficherVoiture') }}" class="nav-link">Voitures</a></li>
 {{--                <li class="nav-item"><a href="{{ route('dashboard') }}" class="nav-link">Dashboard</a></li>--}}
 
@@ -43,6 +42,9 @@
                             </a>
                         </li>
                     @endif
+
+
+
 
 
 

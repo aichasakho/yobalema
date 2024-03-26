@@ -19,6 +19,7 @@
                 <thead class="table-header-group">
                 <tr>
                     <th>Matricule</th>
+                    <th>Nom du Véhicule</th>
                     <th>Date Achat</th>
                     <th>Kilométre par défaut</th>
                     <th>Kilométre actuel</th>
@@ -33,6 +34,7 @@
                 @foreach($voitures as $voiture)
                     <tr>
                         <td>{{ $voiture->matricule }}</td>
+                        <td>{{ $voiture->name }}</td>
                         <td>{{ $voiture->date_achat }}</td>
                         <td>{{ $voiture->km_par_defaut }}</td>
                         <td>{{ $voiture->km_actuel }}</td>

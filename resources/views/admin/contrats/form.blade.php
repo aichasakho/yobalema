@@ -26,10 +26,10 @@
             <div class="form-group mt-3">
                 <label for="etat_contrat" class="form-label">Etat du contrat </label><br>
                     <span class="mr-4">
-                        <input type="radio" name="etat_contrat" value="1" @if($contrat->etat_contrat == 1) checked @endif> Actif
+                        <input type="radio" name="etat_contrat" value="1" @if($contrat->etat_contrat == 1) checked @endif> Valide
                     </span>
                     <span class="ml-3">
-                        <input type="radio" name="etat_contrat" value="0" @if($contrat->etat_contrat == 0) checked @endif> Inactif
+                        <input type="radio" name="etat_contrat" value="0" @if($contrat->etat_contrat == 0) checked @endif> Invalide
                     </span>
             </div>
             <button type="submit" class="btn btn-primary mt-3">@if($contrat->exists) Modifier le contrat @else @yield('title') @endif </button>

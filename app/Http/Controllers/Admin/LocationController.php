@@ -13,6 +13,14 @@ use Illuminate\Contracts\View\View;
 
 class LocationController extends Controller
 {
+
+    private array $modes = [
+        "Espèces" => 'especes',
+        "Carte de crédit" =>'carte',
+        'Virement bancaire' => 'virement',
+    ];
+
+
     protected $nominatimService;
 
     public function __construct(NominatimService $nominatimService)
@@ -31,7 +39,7 @@ class LocationController extends Controller
         // Vérifiez si les résultats de géocodage sont valides
         if (!empty($departResult) && !empty($arriveeResult)) {
             // Vérifiez si les indices 0 existent dans les tableaux $departResult et $arriveeResult
-            if (isset($departResult['lat'], $departResult['lon'], $arriveeResult[0]['lat'], $arriveeResult[0]['lon'])) {
+            if (isset($departResult['lat'], $departResult['lon'], $arriveeResult['lat'], $arriveeResult['lon'])) {
                 // Récupération des coordonnées géographiques des localités de départ et d'arrivée
                 $departLatitude = $departResult['lat'];
                 $departLongitude = $departResult['lon'];
@@ -43,11 +51,9 @@ class LocationController extends Controller
             } else {
                 // Rendu de la vue avec les résultats de géocodage
                 return 0;
-                //return view('clients.index', compact('departResult', 'arriveeResult'));
             }
         } else {
             // Renvoyer une réponse JSON avec un message d'erreur
-            //return response()->json(['error' => 'Erreur de géocodage']);
             return -1;
         }
     }
@@ -67,15 +73,6 @@ class LocationController extends Controller
         return $distance;
     }
 
-    /*public function updateLocation(NominatimService $nominatimService)
-    {
-        // Effectuer la requête à Nominatim pour obtenir les nouvelles coordonnées géographiques
-        $coordinates = $nominatimService->getCoordinates();
-
-        // Retourner les coordonnées au format JSON
-        return response()->json($coordinates);
-    }*/
-
     public function store(LocationFormRequest $request)
     {
         // Montant 200 par km
@@ -89,7 +86,6 @@ class LocationController extends Controller
         // Géocodage des adresses de départ et d'arrivée
         $distance = $this->geocodeAddresses($depart, $arrivee);
 
-
         if ($distance === -1) {
             return redirect()->back()->with('error', 'Adresse invalide');
         }
@@ -99,8 +95,9 @@ class LocationController extends Controller
         $location['prix_du_trajet'] = $montant;
         $location['client_id'] = auth()->user()->id;
 
-        // Recuperation des voiture dans la categorie disponible;
+        $location['debut_trajet'] = date('Y-m-d H:i', strtotime($location['date'] . " " . $location['debut_trajet']));
 
+        // Récupération des voitures dans la catégorie disponible
         $voiture = Voiture::where('type_de_voiture', '=', $location['voiture_id'])
             ->whereNotNull('chauffeur_id')
             ->where('statut', '=', 'Marche')
@@ -109,24 +106,17 @@ class LocationController extends Controller
         if ($voiture == null) {
             return redirect()
                 ->back()
-                ->with('error', 'Voiture non disponible dans cette categorie pour l\'instant');
+                ->with('error', 'Pas de voiture disponible pour le moment !!');
         }
 
         if ($voiture->id == null || $voiture->chauffeur == null || $voiture->chauffeur->id == null) {
             return redirect()
                 ->back()
-                ->with('error', 'Voiture non disponible');
+                ->with('error', 'Voiture indisponible');
         }
 
         $location['voiture_id'] = $voiture->id;
-
         $location['chauffeur_id'] = $voiture->chauffeur->id;
-
-        /*if ($location['voiture_id'] == null || $location['chauffeur_id'] == null) {
-            return redirect()
-                ->back()
-                ->with('error', 'Voiture non disponible');
-        }*/
 
         Location::create($location);
         $voiture->update(['statut' => 'location']);
@@ -141,7 +131,9 @@ class LocationController extends Controller
     public function index()
     {
         $locations = Location::all();
-        return view('clients.locations.index', ['locations' => $locations]);
+        return view('locations.index', [
+            'locations' => $locations,
+            'modes' => $this->modes]);
     }
 
     public function clientlocation()
@@ -150,12 +142,10 @@ class LocationController extends Controller
             ->where('client_id', '=', auth()->user()->id)
             ->get();
 
-        return view('clients.locations.index', ['locations' => $locations]);
+        return view('locations.index',
+            ['locations' => $locations,
+            'modes' => $this->modes]);
     }
-
-
-
-
 
 
     public function show(Location $location)

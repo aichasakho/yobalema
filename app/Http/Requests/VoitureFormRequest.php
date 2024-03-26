@@ -30,7 +30,9 @@ class VoitureFormRequest extends FormRequest
             'km_par_defaut' => ['integer', 'required'],
             'statut' => ['required', 'string'],
             'image_voiture' => ['image'],
-            'type_de_voiture' => ['required', 'string']
+            'type_de_voiture' => ['required', 'string'],
+            'name' => ['string', 'required'],
+
 
         ];
     }

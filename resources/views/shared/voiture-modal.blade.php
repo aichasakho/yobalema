@@ -1,4 +1,6 @@
-@php/* @var App\Models\Voiture  $voiture */@endphp
+@php/* @var App\Models\Voiture  $voiture  */@endphp
+
+
     <!-- Vertically centered Modal -->
 <button type="button" class="btn btn-sm btn-primary "
         data-bs-toggle="modal" data-bs-target="#modal-voiture-{{ $id }}">
@@ -32,7 +34,7 @@
                             </p>
                             <p class="card-text">
                                 <span class="fw-bold">
-                                    <i class="bi bi-speedometer"></i>KM actuel: </span>{{ $voiture->km_actuel }} km
+                                    <i class="bi bi-speedometer"></i>Km actuel: </span>{{ $voiture->km_actuel }} km
                             </p>
                             <p class="card-text">
                                 <span class="fw-bold">Status: </span>{{ $voiture->statut }}
@@ -41,17 +43,22 @@
                                 <span class="fw-bold">Catégorie </span>{{ $voiture->type_de_voiture}}
                             </p>
                         </div><!-- End Col -->
+
+                        <div class="col-md-4">
+                            @if(isset($chauffeur))
+                                <span class="fw-bold">Chauffeur en charge: </span>
+                                <img src="{{ asset('/storage/'.$chauffeur->image) }}" class="img-fluid w-100 rounded" alt="Photo chauffeur">
+                            @endif
+                        </div>
                     </div> <!-- End Row -->
 
             </div>
-            <div class="modal-footer">
-
-
+            {{--<div class="modal-footer">
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
                         Fermer <i class="bi bi-x"></i>
                     </button>
 
-            </div>
+            </div>--}}
         </div>
     </div>
 </div><!-- End Vertically centered Modal-->

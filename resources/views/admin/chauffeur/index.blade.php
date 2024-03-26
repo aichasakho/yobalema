@@ -9,11 +9,11 @@
 <div class="py-12">
     <div class="m-auto card">
         <div class="table-responsive">
-            <table class="table table-striped text-nowrap">
+            <table class="table datatable text-nowrap">
                 <thead class="table-header-group">
                     <tr>
                         <th>#</th>
-                        <th scope="col">Profile</th>
+                        <th scope="col">Profil</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Email</th>
                         <th scope="col">Telephone</th>
@@ -51,7 +51,7 @@
                             <form action="{{ route("admin.chauffeur.addVoiture", $user->chauffeurs) }}" method="post"
                                 class="needs-validation d-inline" novalidate>
                                 @csrf
-                                <button type="submit" class="btn btn-success">Attribuer une voiture</button>
+                                <button type="submit" class="btn btn-success @disabled(!$user->contrats?->etat_contrat )">Attribuer une voiture</button>
                             </form>
                             <a href="{{ route("admin.chauffeur.edit", $user->chauffeurs) }}"
                                 class="btn btn-primary"><i class="ti ti-pencil"> </i></a>

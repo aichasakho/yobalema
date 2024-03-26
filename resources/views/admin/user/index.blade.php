@@ -14,7 +14,7 @@
                     </a>
                 @endif
             </div>
-            <table class="table table-striped">
+            <table class="table datatable">
                 <caption class="container">@yield('title')</caption>
                 <thead class="table-header-group">
                 <tr>

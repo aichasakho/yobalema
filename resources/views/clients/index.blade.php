@@ -63,7 +63,7 @@
                                 </div>
                                 <div>
                                     <div class="form-group">
-                                        @include('shared.input', ['type'=>'datetime-local', 'name' => 'debut_trajet',
+                                        @include('shared.input', ['type'=>'time', 'name' => 'debut_trajet',
                                   'label' => 'Début du trajet',  'value' => old('debut_trajet'),'class' => 'text-light'])
                                     </div>
                                     <div class="form-group">

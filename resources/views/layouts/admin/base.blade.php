@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Yobalema</title>
     @include('layouts.admin._css')
+
 </head>
 
 <body>
@@ -45,6 +46,7 @@
         </div>
     </div>
 </div>
+
     @include('layouts.admin._scripts')
 </body>
 

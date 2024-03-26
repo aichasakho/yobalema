@@ -33,7 +33,7 @@
                         <td>{{ $user->contrats?->date_embauche }}</td>
                         <td>{{ $user->contrats?->type_contrat }}</td>
                         <td>{{ $user->contrats?->duree_contrat }}</td>
-                        <td>{{ $user->contrats?->etat_contrat ? 'Actif' : 'Inactif' }}</td>
+                        <td>{{ $user->contrats?->etat_contrat ? 'Valide' : 'Invalide' }}</td>
                         <td>
                             <div class="d-flex justify-content-between mt-2">
                                 <a href="{{ route('admin.contrat.edit', $user->contrats) }}" class="btn btn-primary"><i class="ti ti-pencil"></i></a>

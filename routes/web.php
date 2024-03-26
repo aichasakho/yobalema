@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FactureController;
+use App\Http\Controllers\Admin\PayementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -27,7 +28,7 @@ use App\Http\Controllers\Admin\DashboardController;
 
 
 
-Route::get('/coordonne', [\App\Http\Controllers\CityController::class, 'testWeather']);
+//Route::get('/coordonne', [\App\Http\Controllers\CityController::class, 'testWeather']);
 
 
 
@@ -42,8 +43,7 @@ Route::get('/',[HomeController::class,'index'])->name('Home');
 Route::get('/clients/index', [HomeController::class, 'index'])->name('index');
 Route::get('/clients/afficher', [HomeController::class, 'afficher'])->name('afficherChauffeur');
 Route::get('/clients/afficherVoiture', [HomeController::class, 'afficherVoiture'])->name('afficherVoiture');
-Route::get('facture/{location}', [FactureController::class, 'show'])->name('facture.show');
-
+Route::get('/facture/{id}', [PayementController::class,'downloadFacture'])->name('facture.download');
 //Route::get('/update-location', [LocationController::class, 'updateLocation']);
 Route::get('/location/client', [LocationController::class, 'clientlocation'])
     ->name('location.client')

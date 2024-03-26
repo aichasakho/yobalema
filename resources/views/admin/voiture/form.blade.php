@@ -28,10 +28,14 @@
 
                         @includeUnless($voiture->exists, 'shared.input', ['required' => false,
                             'label' => 'Image', 'name' => 'image_voiture', 'type' => 'file'])
+                        <div class="row">
+                            @include('shared.input', ['label' => 'Matricule','name' => "matricule",
+                                    'value' => $voiture->matricule, 'class' => 'col-md-6'])
 
-                        @include('shared.input', ['name' => "matricule", 'value' => $voiture->matricule])
+                            @include('shared.input', ['label' => 'Nom du Véhicule','name' => "name",
+                                    'value' => $voiture->name, 'class' => 'col-md-6'])
 
-
+                        </div>
                         <div class="row">
                             @include('shared.input', ['label' => 'Date d\'chat', 'name'=> 'date_achat',
                                     'type' => 'date', 'value' => $voiture->date_achat, 'class' => 'col-md-6'])
@@ -44,7 +48,7 @@
                         <div class="row">
                             @include('shared.select', ['name' => 'statut', 'options' => $statuts,
                                 'value' => $voiture->statut, 'class' => 'col-md-6'])
-                            @include('shared.select', ['name' => 'type_de_voiture', 'options' => $type_de_voiture,
+                            @include('shared.select', [ 'label' => 'Type de voiture','name' => 'type_de_voiture', 'options' => $type_de_voiture,
                                 'value' => $voiture->type_de_voiture, 'class' => 'col-md-6'])
                         </div>
 

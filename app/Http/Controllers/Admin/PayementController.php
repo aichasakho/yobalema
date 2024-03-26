@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Models\Location;
 use App\Models\Payement;
@@ -68,6 +69,20 @@ class PayementController extends Controller
     public function show(Payement $payement)
     {
         return view('admin.payement.show', compact('payement'));
+    }
+
+
+    public function downloadFacture($id)
+    {
+        // Récupérez les données nécessaires à la facture en fonction de l'identifiant $id
+
+        $location = Location::findOrFail($id);
+
+        // Générez la facture au format PDF en utilisant les données récupérées
+        $pdf = PDF::loadView('facture', compact('location'));
+
+        // Téléchargez le fichier PDF
+        return $pdf->download('facture.pdf');
     }
 
     /**
